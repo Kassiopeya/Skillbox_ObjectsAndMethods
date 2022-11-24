@@ -1,11 +1,19 @@
 public class Basket {
 
+    public static double totalPriceInAllBaskets;
+    public static int totalItemsCount;
     private static int basketCount = 0;
-
     private String items = "";
     private int totalPrice = 0;
     private int limit;
     private double totalWeight = 0;
+
+    public double getTotalWeight() {
+        return totalWeight;
+    }
+    public double getTotalPrice() {
+        return totalPrice;
+    }
 
     public Basket() {
         increaseBasketCount(1);
@@ -18,24 +26,33 @@ public class Basket {
         this.limit = limit;
     }
 
-    public Basket(String items, int totalPrice) {
+        public Basket(String items, int totalPrice) {
         this();
         this.items = this.items + items;
         this.totalPrice = totalPrice;
-    }
-
-    public static int getBasketCount() {
-        return basketCount;
-    }
-
-    public double getTotalWeight(){
-        return totalWeight;
     }
 
     public static void increaseBasketCount(int count) {
         Basket.basketCount = Basket.basketCount + count;
     }
 
+    public static void increaseTotalItemsCount(int itemsCount){
+        totalItemsCount = totalItemsCount + itemsCount;
+    }
+
+    public static void increaseTotalPriceInAllBaskets(int price, int itemsCount){
+        totalPriceInAllBaskets = totalPriceInAllBaskets + price * itemsCount;
+    }
+
+    static double countBasketPriceAverage(){
+        return totalPriceInAllBaskets / basketCount;
+    }
+
+    static double countItemPriceAverage(){
+        return totalPriceInAllBaskets / totalItemsCount;
+    }
+
+// вот тут опасно. Если мы выводим в консоль общий вес товаров, то нельзя давать добавлять товар без указания веса
     public void add(String name, int price) {
         add(name, price, 1);
     }
@@ -56,33 +73,43 @@ public class Basket {
         }
 
         items = items + "\n" + name + " - " +
-            itemsCount + " шт. - " + price;
+                itemsCount + " шт. - " + price + "руб./шт";
         totalPrice = totalPrice + itemsCount * price;
+        increaseTotalItemsCount(itemsCount);
+        increaseTotalPriceInAllBaskets(price, itemsCount);
     }
-    public void add(String name, int price, int itemsCount, double itemsWeight){
+
+    public void add(String name, int price, int itemsCount, double itemsWeight) {
         this.add(name, price, itemsCount);
         totalWeight = totalWeight + itemsWeight * itemsCount;
     }
+
     public void clear() {
         items = "";
         totalPrice = 0;
-    }
-
-    public int getTotalPrice() {
-        return totalPrice;
     }
 
     public boolean contains(String name) {
         return items.contains(name);
     }
 
-    public void print(String title) {
+    public void printBasketInfo(String title) {
         System.out.println(title);
         if (items.isEmpty()) {
             System.out.println("Корзина пуста");
         } else {
-            System.out.println(items);
+            System.out.println(items + "\n");
             System.out.println("Общий вес товаров: " + getTotalWeight());
+
         }
+    }
+
+    public void printAllBasketsInfo(){
+        System.out.println("Информация по всем корзинам: ");
+        System.out.println("\n" + "Общее количество корзин: " + basketCount);
+        System.out.println("Общее количество всех товаров во всех корзинах: " + totalItemsCount);
+        System.out.println("Общая стоимость всех товаров во всех корзинах: " + totalPriceInAllBaskets);
+        System.out.println("Средняя стоимость корзины: " + countBasketPriceAverage());
+        System.out.println("Cредняя стоимость товара: " + countItemPriceAverage());
     }
 }
