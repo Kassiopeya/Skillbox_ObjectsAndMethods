@@ -94,19 +94,19 @@ public class Basket {
     }
 
     public void printBasketInfo(String title) {
-        System.out.println(title);
+        System.out.println("\n" + title);
         if (items.isEmpty()) {
             System.out.println("Корзина пуста");
         } else {
-            System.out.println(items + "\n");
+            System.out.println(items);
             System.out.println("Общий вес товаров: " + getTotalWeight());
 
         }
     }
 
-    public void printAllBasketsInfo(){
-        System.out.println("Информация по всем корзинам: ");
-        System.out.println("\n" + "Общее количество корзин: " + basketCount);
+    public static void printAllBasketsInfo(){
+        System.out.println("\n" + "Информация по всем корзинам: ");
+        System.out.println("Общее количество корзин: " + basketCount);
         System.out.println("Общее количество всех товаров во всех корзинах: " + totalItemsCount);
         System.out.println("Общая стоимость всех товаров во всех корзинах: " + totalPriceInAllBaskets);
         System.out.println("Средняя стоимость корзины: " + countBasketPriceAverage());
